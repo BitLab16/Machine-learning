@@ -1,5 +1,6 @@
 import pandas as pd
 import seaborn as sns
+from sklearn.model_selection import cross_val_score 
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.metrics import r2_score, mean_absolute_error
@@ -28,8 +29,8 @@ def scaledata(data):
     y = data["cnt"]  # labels
     return X,y
 
-def rf(X_train, y_train):
-    rf_model = RandomForestRegressor(n_estimators=128, max_depth=None, min_samples_split=2, random_state=0)
+def rf(X_train, X_test, y_train, y_test):
+    rf_model = RandomForestRegressor(n_estimators=100, max_depth=None, min_samples_split=2, random_state=0)
     rf_model.fit(X_train, y_train)
     p_train = rf_model.predict(X_train)
     p_test = rf_model.predict(X_test)
@@ -41,7 +42,7 @@ def rf(X_train, y_train):
     pred.to_csv('pred.csv')
 
 
-def dt(X_train, y_train):
+def dt(X_train, X_test, y_train, y_test):
     dt_model = DecisionTreeRegressor()
     dt_model.fit(X_train, y_train)
     p_train = dt_model.predict(X_train)
@@ -54,7 +55,7 @@ def dt(X_train, y_train):
     pred.to_csv('pred.csv')
 
 
-def ada(X_train, y_train):
+def ada(X_train, X_test, y_train, y_test):
     ada_model = AdaBoostRegressor()
     ada_model.fit(X_train, y_train)
     p_train = ada_model.predict(X_train)
@@ -67,14 +68,14 @@ def ada(X_train, y_train):
     pred.to_csv('pred.csv')
 
 
-def gbt(X_train, y_train):
+def gbt(X, y, X_train, X_test, y_train, y_test):
     gb_model = GradientBoostingRegressor(loss='ls', learning_rate=0.7)
     gb_model.fit(X_train, y_train)
     p_train = gb_model.predict(X_train)
     p_test = gb_model.predict(X_test)
     mae_train = mean_absolute_error(y_train, p_train)
     mae_test = mean_absolute_error(y_test, p_test)
-    print(model_selection.cross_val_score(GradientBoostingRegressor(loss='ls', learning_rate=0.7), X, y))
+    print(cross_val_score(GradientBoostingRegressor(loss='ls', learning_rate=0.7), X, y))
     print("R2 score: " + str(r2_score(y_test, p_test)))
     res = pd.DataFrame({'Actual': y_test, 'Predicted': p_test})
     pred = pd.DataFrame(data=p_test)
