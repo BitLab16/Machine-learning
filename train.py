@@ -7,7 +7,7 @@ from sqlalchemy import MetaData, Table
 from sqlalchemy import insert, update
 
 #collegamento database
-engine = create_engine('mysql+mysqldb://pma@localhost:3306/ml')
+engine = create_engine('postgresql+psycopg2://user:user@localhost:6543/gathering_detection')
 connection = engine.connect()
 print(engine.table_names())
 metadata = MetaData()
@@ -15,7 +15,8 @@ gatherings_detection = Table('gatherings_detection', metadata, autoload=True, au
 gatherings_prediction = Table('gatherings_prediction', metadata, autoload=True, autoload_with=engine)
 
 #import dataset e studio correlazione
-#print(type(gatherings_detection))
+detection_df = pd.read_sql_table('gatherings_detection', con=connection)
+prediction_df = pd.read_sql_table('gatherings_prediction', con=connection)
 df = pd.read_csv("https://raw.githubusercontent.com/Cionsa/Datasets/main/hour.csv", delimiter=',')
 data = df.drop(['instant', 'registered', 'casual', 'dteday'], axis=1)
 Algorithms.heatmap(data)
