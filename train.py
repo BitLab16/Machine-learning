@@ -20,7 +20,7 @@ prediction_df = pd.read_sql_table('gatherings_prediction', con=connection)
 df = pd.read_csv("https://raw.githubusercontent.com/Cionsa/Datasets/main/hour.csv", delimiter=',')
 data = df.drop(['instant', 'registered', 'casual', 'dteday'], axis=1)
 Algorithms.heatmap(data)
-
+"""
 #scaling dati
 X,y = Algorithms.scaledata(data)
 
@@ -51,9 +51,9 @@ best_test_df = pd.DataFrame(data = best_test)
 best_test_df.to_csv('best_pred.csv')
 res = pd.DataFrame({'Actual': y_test, 'Predicted': best_test})
 print(res)
-
+"""
 #Send to DB
 predictions = (
-    insert(gatherings_prediction).values(id='001', tracked_point_id='001', detection_time='1', people_concentration='10') #people_concentration = best_test
+    gatherings_prediction.insert(None).values(id='003', tracked_point_id='001', detection_time='2021-3-5 17:00:00', people_concentration='10') #people_concentration = best_test
 )
 engine.execute(predictions)
