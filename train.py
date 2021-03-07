@@ -24,15 +24,8 @@ gatherings_prediction = Table('gatherings_prediction', metadata, autoload=True, 
 #import dataset e studio correlazione
 data = pd.read_sql_table('gatherings_detection', con=connection)
 prediction_df = pd.read_sql_table('gatherings_prediction', con=connection)
-#Algorithms.heatmap(data)
-"""data['new_date'] = [d.date() for d in data['detection_time']]
-data['new_time'] = [d.time() for d in data['detection_time']]
-data.replace(regex=['-'], value='', inplace=True)"""
-data['holiday'] = data.holiday.astype(int)
+Algorithms.heatmap(data)
 detectiontime = data['detection_time']
-data=data.drop(["detection_time"], axis=1)
-with pd.option_context('display.max_columns', None, 'display.max_rows', None):
- print(data.head())
 
 #scaling dati
 X,y = Algorithms.scaledata(data)
@@ -41,7 +34,7 @@ X,y = Algorithms.scaledata(data)
 models = list()
 
 #split dataset 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False, random_state=False)
 
 #random forest
 Algorithms.rf(X_train, X_test, y_train, y_test, models)
@@ -70,12 +63,7 @@ res = pd.DataFrame({'Actual': y.tail(24), 'Predicted': best_test})
 print(res)
 print(best_test)
 print(best_test_df.head())
-"""
+
 #Send to DB
-predictions = (
-    gatherings_prediction.insert(None).values(id='003', tracked_point_id='001', detection_time='2021-3-5 17:00:00', people_concentration='10') #people_concentration = best_test
-)
-engine.execute(predictions)
-"""
 best_test_df.to_sql('gatherings_prediction', engine, if_exists='append', index=False)
 

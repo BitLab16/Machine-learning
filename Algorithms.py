@@ -19,12 +19,22 @@ def heatmap(data):
 
 
 def scaledata(data):
-    #transformers = [
-        #['one_hot', OneHotEncoder(), ['season', 'yr', 'mnth', 'weekday', 'weathersit', 'hr']],
-        #['scaler', StandardScaler(), ['temp', 'atemp', 'hum', 'windspeed', 'holiday', 'workingday']]
-    #]
-    #ct = ColumnTransformer(transformers, remainder="passthrough")
-    #X = ct.fit_transform(data)
+    """
+    transformers = [
+        ['one_hot', OneHotEncoder(), ['', ]],
+        ['scaler', StandardScaler(), ['']]
+    ]
+    ct = ColumnTransformer(transformers, remainder="passthrough")
+    X = ct.fit_transform(data)
+    """
+    data['new_date'] = [d.date() for d in data['detection_time']]
+    data['new_time'] = [d.time() for d in data['detection_time']]
+    data['new_time']=pd.Series((data['new_time']).astype(str).str.replace(':', '', regex=False))
+    data['new_date'] = pd.Series((data['new_date']).astype(str).str.replace('-', '', regex=False))
+    data = data.drop(["detection_time"], axis=1)
+    data['holiday'] = data.holiday.astype(int)
+    with pd.option_context('display.max_columns', None, 'display.max_rows', None):
+        print(data.head())
     X = data.drop(["people_concentration"], axis=1)  # features
     y = data["people_concentration"]  # labels
     return X,y
