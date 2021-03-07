@@ -19,14 +19,14 @@ def heatmap(data):
 
 
 def scaledata(data):
-    transformers = [
-        ['one_hot', OneHotEncoder(), ['season', 'yr', 'mnth', 'weekday', 'weathersit', 'hr']],
-        ['scaler', StandardScaler(), ['temp', 'atemp', 'hum', 'windspeed', 'holiday', 'workingday']]
-    ]
-    ct = ColumnTransformer(transformers, remainder="passthrough")
-    X = ct.fit_transform(data)
-    X = data.drop(["cnt"], axis=1)  # features
-    y = data["cnt"]  # labels
+    #transformers = [
+        #['one_hot', OneHotEncoder(), ['season', 'yr', 'mnth', 'weekday', 'weathersit', 'hr']],
+        #['scaler', StandardScaler(), ['temp', 'atemp', 'hum', 'windspeed', 'holiday', 'workingday']]
+    #]
+    #ct = ColumnTransformer(transformers, remainder="passthrough")
+    #X = ct.fit_transform(data)
+    X = data.drop(["people_concentration"], axis=1)  # features
+    y = data["people_concentration"]  # labels
     return X,y
 
 def rf(X_train, X_test, y_train, y_test, models):
@@ -57,11 +57,11 @@ def gbt(X, y, X_train, X_test, y_train, y_test, models):
     print("R2 score: " + str(r2_score(y_test, gb_model.predict(X_test))))
     models.append(('gbt', gb_model))
 
-def compare(models, X_test, y_test):
+def compare(models, X, y):
     best=0
     for name, model in models:
-        p_test=model.predict(X_test)
-        score = r2_score(y_test, p_test)
+        p_test=model.predict(X.tail(24))
+        score = r2_score(y.tail(24), p_test)
         if(score > best):
             best=score
             best_name=name
