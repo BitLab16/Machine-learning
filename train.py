@@ -1,87 +1,69 @@
-import numpy as np
 import pandas as pd
-import seaborn as sns
-import importlib
-from matplotlib import pyplot as plt
+import csv
+import sklearn
+import psycopg2
 from sklearn.model_selection import train_test_split
-from sklearn import tree
-from sklearn import metrics
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, RobustScaler
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-from sklearn.linear_model import LinearRegression
-from sklearn.compose import ColumnTransformer
-from sklearn.ensemble import RandomForestRegressor, BaggingRegressor
-from sklearn.kernel_ridge import KernelRidge
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import AdaBoostRegressor
-from sklearn.tree import DecisionTreeRegressor
+import Algorithms
+from sqlalchemy import create_engine
+from sqlalchemy import MetaData, Table
+from sqlalchemy import insert, update
+from geoalchemy2 import Geography
+import sql
+import re
+
+
+
+#collegamento database
+engine = create_engine('postgresql+psycopg2://user:user@localhost:6543/gathering_detection')
+connection = engine.connect()
+print(engine.table_names())
+metadata = MetaData()
+gatherings_detection = Table('gatherings_detection', metadata, autoload=True, autoload_with=engine)
+gatherings_prediction = Table('gatherings_prediction', metadata, autoload=True, autoload_with=engine)
 
 #import dataset e studio correlazione
-df = pd.read_csv("https://raw.githubusercontent.com/Cionsa/Datasets/main/hour.csv", delimiter=',')
-data = df.drop(['instant', 'registered', 'casual', 'dteday'], axis=1)
-data.corr() #correlazione tra variabili in tabella n * n
-hm = sns.heatmap(data.corr(), cbar=True, square=False, yticklabels=data.columns, xticklabels=data.columns)
-plt.show()
-data.head()
+data = pd.read_sql_table('gatherings_detection', con=connection)
+prediction_df = pd.read_sql_table('gatherings_prediction', con=connection)
+Algorithms.heatmap(data)
+detectiontime = data['detection_time']
 
-#definizione scaler
-transformers= [
-        ['one_hot', OneHotEncoder(), ['season', 'yr', 'mnth', 'weekday', 'weathersit', 'hr']],
-        ['scaler', StandardScaler(), ['temp', 'atemp', 'hum', 'windspeed', 'holiday', 'workingday']]
-]
-ct = ColumnTransformer(transformers, remainder="passthrough")
-X=ct.fit_transform(data)
-X=data.drop(["cnt"], axis=1)  #features
-y=data["cnt"]                 #labels
+#scaling dati
+X,y = Algorithms.scaledata(data)
+
+#list predictions
+models = list()
 
 #split dataset 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False, random_state=False)
 
 #random forest
-rf_model = RandomForestRegressor(n_estimators=128, max_depth=None,min_samples_split=2, random_state=0)
-rf_model.fit(X_train, y_train)
-p_train= rf_model.predict(X_train)
-p_test = rf_model.predict(X_test)
-mae_train=mean_absolute_error(y_train, p_train)
-mae_test=mean_absolute_error(y_test, p_test)
-print("R2 score: "+str(r2_score(y_test, p_test)))
-res=pd.DataFrame({'Actual':y_test, 'Predicted':p_test})
-pred = pd.DataFrame(data = p_test)
-pred.to_csv('pred.csv')
+Algorithms.rf(X_train, X_test, y_train, y_test, models)
 
 #decision tree
-dt_model = DecisionTreeRegressor()
-dt_model.fit(X_train, y_train)
-p_train= dt_model.predict(X_train)
-p_test = dt_model.predict(X_test)
-mae_train=mean_absolute_error(y_train, p_train)
-mae_test=mean_absolute_error(y_test, p_test)
-print("R2 score: "+str(r2_score(y_test, p_test)))
-res=pd.DataFrame({'Actual':y_test, 'Predicted':p_test})
-pred = pd.DataFrame(data = p_test)
-pred.to_csv('pred.csv')
+Algorithms.dt(X_train, X_test, y_train, y_test, models)
 
 #AdaBoost
-ada_model = AdaBoostRegressor()
-ada_model.fit(X_train, y_train)
-p_train= ada_model.predict(X_train)
-p_test = ada_model.predict(X_test)
-mae_train=mean_absolute_error(y_train, p_train)
-mae_test=mean_absolute_error(y_test, p_test)
-print("R2 score: "+str(r2_score(y_test, p_test)))
-res=pd.DataFrame({'Actual':y_test, 'Predicted':p_test})
-pred = pd.DataFrame(data = p_test)
-pred.to_csv('pred.csv')
+Algorithms.ada(X_train, X_test, y_train, y_test, models)
 
 #GradientBoostingTree
-gb_model = GradientBoostingRegressor(loss='ls',learning_rate=0.7)
-gb_model.fit(X_train, y_train)
-p_train= gb_model.predict(X_train)
-p_test = gb_model.predict(X_test)
-mae_train=mean_absolute_error(y_train, p_train)
-mae_test=mean_absolute_error(y_test, p_test)
-print(model_selection.cross_val_score(GradientBoostingRegressor(loss='ls',learning_rate=0.7), X, y))
-print("R2 score: "+str(r2_score(y_test, p_test)))
-res=pd.DataFrame({'Actual':y_test, 'Predicted':p_test})
-pred = pd.DataFrame(data = p_test)
-pred.to_csv('pred.csv')
+Algorithms.gbt(X, y, X_train, X_test, y_train, y_test, models)
+
+#Compare score
+best, best_name, best_test = Algorithms.compare(models, X, y)
+
+#Predictions to csv
+best_test_df=pd.DataFrame()
+best_test_df['tracked_point_id']= data['tracked_point_id'].tail(24)
+best_test_df['people_concentration'] = best_test
+best_test_df['detection_time'] = detectiontime.tail(24)
+best_test_df.reset_index(drop=True, inplace=True)
+
+#best_pred = best_test_df.to_csv('best_pred.csv')
+res = pd.DataFrame({'Actual': y.tail(24), 'Predicted': best_test})
+print(res)
+print(best_test)
+print(best_test_df.head())
+
+#Send to DB
+best_test_df.to_sql('gatherings_prediction', engine, if_exists='append', index=False)
+
