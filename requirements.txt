@@ -1,0 +1,13 @@
+pandas==1.2.1
+scikit-learn==0.24.1
+scipy==1.6.0
+seaborn==0.11.1
+numpy==1.19.5
+matplotlib==3.3.3
+ipython==7.19.0
+numpy==1.19.5
+Jinja2==2.11.2
+SQLAlchemy==1.3.23
+py-postgresql==1.2.2
+psycopg2==2.8.6
+GeoAlchemy2==0.8.4
