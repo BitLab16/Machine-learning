@@ -14,7 +14,7 @@ import re
 
 
 #collegamento database
-engine = create_engine('postgresql+psycopg2://user:user@localhost:6543/gathering_detection')
+engine = create_engine('postgresql+psycopg2://user:user@localhost:5432/gathering_detection')
 connection = engine.connect()
 print(engine.table_names())
 metadata = MetaData()
