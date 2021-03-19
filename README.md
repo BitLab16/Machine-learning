@@ -1,5 +1,7 @@
 # Machine-learning
 
+[![Python CI](https://github.com/BitLab16/Machine-learning/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/BitLab16/Machine-learning/actions/workflows/ci.yml)
+
 Per l'esecuzione dell'applicativo:
 1) Installare Python (versione <=3.8)
 2) Installare Pip:
