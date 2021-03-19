@@ -9,5 +9,5 @@ numpy==1.19.5
 Jinja2==2.11.2
 SQLAlchemy==1.3.23
 py-postgresql==1.2.2
-psycopg2==2.8.6
+psycopg2-binary==2.8.6
 GeoAlchemy2==0.8.4
