@@ -1,6 +1,6 @@
 import pandas as pd
 import seaborn as sns
-from sklearn.model_selection import cross_val_score 
+import sklearn
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.metrics import r2_score, mean_absolute_error
