@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import MetaData, Table
 from geoalchemy2 import Geography
-import sql
+# import sql
 import re
 from sqlalchemy import insert, update
 import psycopg2
