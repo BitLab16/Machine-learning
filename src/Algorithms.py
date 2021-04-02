@@ -12,7 +12,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.tree import DecisionTreeRegressor
 from xgboost import XGBRegressor
-from lightgbm import LGBMRegressor
+#from lightgbm import LGBMRegressor
 
 def heatmap(data):
     data.corr()  # correlazione tra variabili in tabella n * n
@@ -73,11 +73,11 @@ def xgb(X, y, X_train, X_test, y_train, y_test, models):
     print("XGBoost score: " + str(r2_score(y_test, xgb_model.predict(X_test))))
     models.append(('xgb', xgb_model))
 
-def lgbm(X, y, X_train, X_test, y_train, y_test, models):
-    lgbm_model = LGBMRegressor(learning_rate=0.1, max_depth=8, boosting_type="goss", max_bin=25, num_leaves=5, path_smooth=1.0, min_data_in_leaf=1000, num_iterations=100)
-    lgbm_model.fit(X_train, y_train)
-    print("Light GBM score: " + str(r2_score(y_test, lgbm_model.predict(X_test))))
-    models.append(('lgbm', lgbm_model))
+#def lgbm(X, y, X_train, X_test, y_train, y_test, models):
+#    lgbm_model = LGBMRegressor(learning_rate=0.1, max_depth=8, boosting_type="goss", max_bin=25, num_leaves=5, path_smooth=1.0, min_data_in_leaf=1000, num_iterations=100)
+#    lgbm_model.fit(X_train, y_train)
+#    print("Light GBM score: " + str(r2_score(y_test, lgbm_model.predict(X_test))))
+#    models.append(('lgbm', lgbm_model))
 
 def compare(models, X_test, y_test):
     best=0 

@@ -16,7 +16,7 @@ def traincode():
     Algorithms.ada(X_train, X_test, y_train, y_test, models)
     Algorithms.gbt(X, y, X_train, X_test, y_train, y_test, models)
     Algorithms.xgb(X, y, X_train, X_test, y_train, y_test, models)
-    Algorithms.lgbm(X, y, X_train, X_test, y_train, y_test, models)
+    #Algorithms.lgbm(X, y, X_train, X_test, y_train, y_test, models)
     detectiontime=data['detection_time']
     best, best_name, best_test = Algorithms.compare(models, X_test, y_test)
     return X, y, models, data, best, best_name, best_test, engine
