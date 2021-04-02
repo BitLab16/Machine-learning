@@ -6,10 +6,14 @@ RUN python3 -m venv $VIRTUAL_ENV
 
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-COPY requirements.txt .
+COPY ./requirements.txt /requirements.txt
+
+WORKDIR /
+
+# COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY src .
+COPY . /
 
-CMD ["python", "run.py"]
+CMD ["python", "src/run.py"]
