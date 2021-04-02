@@ -5,7 +5,8 @@ import dbConnection.dbConnection
 
 def traincode():
     engine, gatherings_detection, gatherings_prediction, connection = dbConnection.dbConnection.connect()
-    data, prediction_df = dbConnection.dbConnection.getTables(connection)
+    #data, prediction_df = dbConnection.dbConnection.getTables(connection)
+    data=pd.read_csv("train.csv")
     X,y = Training.Algorithms.scaledata(data)
     detectiontime = data['detection_time']
     models = list()
@@ -14,7 +15,9 @@ def traincode():
     Training.Algorithms.dt(X_train, X_test, y_train, y_test, models)
     Training.Algorithms.ada(X_train, X_test, y_train, y_test, models)
     Training.Algorithms.gbt(X, y, X_train, X_test, y_train, y_test, models)
-    return X, y, models, data, engine
-
-#Send to DB
+    Training.Algorithms.xgb(X, y, X_train, X_test, y_train, y_test, models)
+    Training.Algorithms.lgbm(X, y, X_train, X_test, y_train, y_test, models)
+    detectiontime=data['detection_time']
+    best, best_name, best_test = Training.Algorithms.compare(models, X_test, y_test)
+    return X, y, models, data, best, best_name, best_test, engine
 
