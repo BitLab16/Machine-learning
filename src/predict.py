@@ -4,12 +4,13 @@ from sklearn.model_selection import train_test_split
 import Algorithms
 import dbConnection
 
-def predictions(X, y, models, data, best, best_name, best_test, engine):
+def predictions(x, y, models, data, best, best_name, best_test, engine):
+    print(x, y)
     best_test_df=pd.read_csv("predict_demo.csv")
     detectiontime = best_test_df["detection_time"]
     trackedpointid = best_test_df["tracked_point_id"]
-    X, y = Algorithms.scaledata(best_test_df)
-    pred = best_test.predict(X)
+    x, y = Algorithms.scaledata(best_test_df)
+    pred = best_test.predict(x)
     best_test_df = best_test_df.drop(["season", "holiday", "weather", "events", "attractions", "weather_index", "attractions_index", "event_index", "time_index", "date", "time"], axis=1)
     best_test_df["detection_time"] = detectiontime
     best_test_df["tracked_point_id"] = trackedpointid
