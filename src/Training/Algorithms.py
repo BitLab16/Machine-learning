@@ -1,7 +1,7 @@
 import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, RobustScaler, MinMaxScaler 
+from sklearn.preprocessing import OneHotEncoder, StandardScaler, Normalizer, MinMaxScaler 
 from sklearn.metrics import r2_score, mean_absolute_error
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestRegressor
@@ -24,14 +24,22 @@ def scaledata(data):
     data['date'] = data['date'].astype(int)
     data = data.drop(["detection_time","tracked_point_id"], axis=1)
     data['holiday'] = data.holiday.astype(int)
+    time_array = [0, 30, 100, 130, 200, 230, 300, 330, 400, 430, 500, 530,
+             600, 630, 700, 730, 800, 830, 900, 930, 1000, 1030, 1100,
+             1130, 1200, 1230, 1300, 1330, 1400, 1430, 1500, 1530,
+             1600, 1630, 1700, 1730, 1800, 1830, 1900, 1930, 2000,
+             2030, 2100, 2130, 2200, 2230, 2300, 2330]
+    data_filtered = data.loc[data['time'].isin(time_array)]
     transformers = [
-        ['one_hot', OneHotEncoder(), ['season','weather', 'time']],
-        ['scaler', StandardScaler(), ['weather_index','event_index','attractions_index','time_index', 'date']],
+        ['one_hot', OneHotEncoder(), ['season', 'weather', 'attractions', 'time']],
+        ['minmax', MinMaxScaler(), ['weather_index', 'event_index', 'attractions_index', 'time_index']],
+        ['normalize', Normalizer(), ['date']]
     ]
     ct = ColumnTransformer(transformers, remainder="passthrough")
-    x = ct.fit_transform(data)
-    x = data.drop(["people_concentration"], axis=1)  # features
-    y = data["people_concentration"]  # labels
+    x = ct.fit_transform(data_filtered)
+    x = pd.DataFrame(x)
+    x = data_filtered.drop(["people_concentration"], axis=1)  # features
+    y = data_filtered["people_concentration"]
     return x,y
 
 def rf(x_train, x_test, y_train, y_test, models):

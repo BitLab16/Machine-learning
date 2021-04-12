@@ -1,5 +1,7 @@
 pred.csv
-__pycache__/*
+src/Training/__pycache__/*
+src/Prediction/__pycache__/*
+src/dbConnection/__pycache__/*
 best_pred.csv
 tempCodeRunnerFile.py
 env
