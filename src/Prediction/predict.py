@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-import Algorithms
-import dbConnection
+from Training import Algorithms
 
 def predictions(x, y, models, data, best, best_name, best_test, engine):
     print(x, y)

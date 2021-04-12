@@ -1,7 +1,7 @@
 import schedule
 import time
-import predict
-import traincode
+from Prediction import predict
+from Training import traincode
 x, y, models, data, best, best_name, best_test, engine = traincode.traincode()
 schedule.every(5).seconds.do(predict.predictions, x, y, models, data, best, best_name, best_test, engine)
 while True:

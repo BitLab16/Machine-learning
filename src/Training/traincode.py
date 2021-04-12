@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-import Algorithms
-import dbConnection
+from Training import Algorithms
+from dbConnection import dbConnection
 
 def traincode():
     engine, gatherings_detection, gatherings_prediction, connection = dbConnection.connect()
@@ -14,7 +14,6 @@ def traincode():
     Algorithms.rf(x_train, x_test, y_train, y_test, models)
     Algorithms.dt(x_train, x_test, y_train, y_test, models)
     Algorithms.gbt(x_train, x_test, y_train, y_test, models)
-    Algorithms.xgb(x_train, x_test, y_train, y_test, models)
     detectiontime=data['detection_time']
     best, best_name, best_test = Algorithms.compare(models, x_test, y_test)
     return x, y, models, data, best, best_name, best_test, engine

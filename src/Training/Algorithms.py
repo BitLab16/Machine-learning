@@ -1,17 +1,12 @@
 import pandas as pd
 import seaborn as sns
-import sklearn
-import sys
-import re
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, RobustScaler, MinMaxScaler 
 from sklearn.metrics import r2_score, mean_absolute_error
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import AdaBoostRegressor
 from sklearn.tree import DecisionTreeRegressor
-from xgboost import XGBRegressor
 
 def heatmap(data):
     data.corr() 
@@ -56,12 +51,6 @@ def gbt(x_train, x_test, y_train, y_test, models):
     gb_model.fit(x_train, y_train)
     print("Gradient Boost score: " + str(r2_score(y_test, gb_model.predict(x_test))))
     models.append(('gbt', gb_model))
-
-def xgb(x_train, x_test, y_train, y_test, models):
-    xgb_model = XGBRegressor(booster='dart', gamma= 0.1, learning_rate= 0.1, max_depth= 2, subsample= 0.2)
-    xgb_model.fit(x_train, y_train)
-    print("XGBoost score: " + str(r2_score(y_test, xgb_model.predict(x_test))))
-    models.append(('xgb', xgb_model))
 
 def compare(models, x_test, y_test):
     best=0 
