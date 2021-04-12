@@ -7,7 +7,7 @@ from sqlalchemy import insert, update
 import psycopg2
 
 def connect():
-    # engine = create_engine('postgresql+psycopg2://user:user@localhost:6543/gathering_detection')
+    # engine = create_engine('postgresql+psycopg2://user:user@localhost:6543/gathering_detection')
     engine = create_engine('postgresql+psycopg2://user:user@postgres-db:5432/gathering_detection')
     connection = engine.connect()
     print(engine.table_names())

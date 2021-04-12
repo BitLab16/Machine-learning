@@ -1,10 +1,12 @@
 import pandas as pd
+from pathlib import Path
 import numpy as np
 from Training import Algorithms
 
 def predictions(x, y, models, data, best, best_name, best_test, engine):
     print(x, y)
-    best_test_df=pd.read_csv("predict_demo.csv")
+    predict_filename = Path('src/predict_demo.csv')
+    best_test_df=pd.read_csv(predict_filename)
     detectiontime = best_test_df["detection_time"]
     trackedpointid = best_test_df["tracked_point_id"]
     x, y = Algorithms.scaledata(best_test_df)

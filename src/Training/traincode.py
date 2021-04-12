@@ -1,4 +1,5 @@
 import pandas as pd
+from pathlib import Path
 from sklearn.model_selection import train_test_split
 from Training import Algorithms
 from dbConnection import dbConnection
@@ -6,7 +7,8 @@ from dbConnection import dbConnection
 def traincode():
     engine, gatherings_detection, gatherings_prediction, connection = dbConnection.connect()
     #data, prediction_df = dbConnection.dbConnection.get_tables(connection)
-    data=pd.read_csv("train.csv")
+    train_filename = Path('src/train.csv')
+    data=pd.read_csv(train_filename)
     x,y = Algorithms.scaledata(data)
     detectiontime = data['detection_time']
     models = list()
