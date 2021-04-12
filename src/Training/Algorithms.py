@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+from scipy import stats
 import seaborn as sns
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, Normalizer, MinMaxScaler 
@@ -24,6 +26,8 @@ def scaledata(data):
     data['date'] = data['date'].astype(int)
     data = data.drop(["detection_time","tracked_point_id"], axis=1)
     data['holiday'] = data.holiday.astype(int)
+    data = data[(np.abs(stats.zscore(data['people_concentration'])) < 3)]
+    data.isnull().values.any()
     time_array = [0, 30, 100, 130, 200, 230, 300, 330, 400, 430, 500, 530,
              600, 630, 700, 730, 800, 830, 900, 930, 1000, 1030, 1100,
              1130, 1200, 1230, 1300, 1330, 1400, 1430, 1500, 1530,
