@@ -7,9 +7,15 @@ from sqlalchemy import insert, update
 import psycopg2
 
 def connect():
-    # engine = create_engine('postgresql+psycopg2://user:user@localhost:6543/gathering_detection')
-    engine = create_engine('postgresql+psycopg2://user:user@postgres-db:5432/gathering_detection')
-    connection = engine.connect()
+    #engine = create_engine('postgresql+psycopg2://user:user@postgres-db:5432/gathering_detection')
+    while True:
+        engine = create_engine('postgresql+psycopg2://user:user@localhost:6543/gathering_detection', pool_pre_ping=True)
+        try:
+            connection = engine.connect()
+        except:
+            print("Connessione fallita")
+            continue
+        break;
     print(engine.table_names())
     metadata = MetaData()
     gatherings_detection = Table('gatherings_detection', metadata, autoload=True, autoload_with=engine)
