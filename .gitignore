@@ -1,8 +1,42 @@
-pred.csv
-src/Training/__pycache__/*
-src/Prediction/__pycache__/*
-src/dbConnection/__pycache__/*
-best_pred.csv
-tempCodeRunnerFile.py
-env
-.pyc
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Flask Stuff
+instance/
+.webassets-cache
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+#extra
+.DS_Store

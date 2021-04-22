@@ -16,4 +16,6 @@ RUN pip install -r requirements.txt
 
 COPY . /
 
-CMD ["python", "src/run.py"]
+RUN python setup.py install
+
+CMD ["flask", "run", "app.py"]
