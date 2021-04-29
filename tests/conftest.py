@@ -1,35 +1,13 @@
 import pytest
 import pandas as pd
+from injector import inject
+from pathlib import Path
+
 from datetime import datetime
 
 from flaskr.ml import Algorithm, DecisionTree, GradientBoosting, RandomForest
+from flaskr.repository import FileReader
 
-'''
-def features_for_testing(data_for_testing):
-    test_features = data_test.drop(["people_concentration"], axis=1)
-    return test_features
-
-def targets_for_testing(data_for_testing):
-    test_targets = data_test["people_concentration"]
-    return test_targets
-
-
-@pytest.fixture(scope='module')
-def new_dtmodel(features_for_testing, targets_for_testing):
-    dt_model = DecisionTree()
-    dt_model.fit(test_features, test_targets)
-    return dt_model
-    
-def new_rfmodel(features_for_testing, targets_for_testing):
-    rf_model = RandomForest()
-    rf_model.fit(test_features, test_targets)
-    return rf_model
-    
-def gb_newmodel(features_for_testing, targets_for_testing):
-    gb_model = GradientBoosting()
-    gb_model.fit(test_features, test_targets)
-    return gb_model
-    '''
 @pytest.fixture(scope='function')
 def datetime_test():
     d = {'a': "2017-11-28 23:55", 'b': '2017-11-28 23:30'}
@@ -53,5 +31,14 @@ def timearray_test():
 
 @pytest.fixture(scope='function')
 def data_for_testing():
-    data_for_testing = pd.read_csv('test_dataset.csv')
+    file_reader = FileReader('test_dataset.csv')
+    data_for_testing = file_reader.read_file()
     return data_for_testing
+
+@pytest.fixture(scope='function')
+def prediction_data_for_testing():
+    file_reader = FileReader('prediction_test_dataset.csv')
+    prediction_data_for_testing = file_reader.read_file()
+    return prediction_data_for_testing
+
+
