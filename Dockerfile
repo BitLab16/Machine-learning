@@ -18,4 +18,4 @@ COPY . /
 
 RUN python setup.py install
 
-CMD ["flask", "run", "-h", "0.0.0.0", "-p", "6000"]
+CMD ["flask", "run", "-h", "0.0.0.0", "-p", "6001"]
