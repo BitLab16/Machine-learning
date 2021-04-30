@@ -47,9 +47,25 @@ def timearray_test():
 
 @pytest.fixture(scope='function')
 def data_for_testing():
-    file_reader = FileReader('test_dataset.csv')
+    file_reader = FileReader('test_data.csv')
     data_for_testing = file_reader.read_file()
     return data_for_testing
+
+@pytest.fixture(scope='function')
+def data_for_testing_splitted():
+    file_reader = FileReader('test_data_splitted.csv')
+    data_for_testing_splitted = file_reader.read_file()
+    return data_for_testing_splitted
+
+@pytest.fixture(scope='function')
+def features_test_splitted(data_for_testing_splitted):
+    features_test_splitted = data_for_testing_splitted.drop('people_concentration', axis=1)
+    return features_test_splitted
+
+@pytest.fixture(scope='function')
+def targets_test_splitted(data_for_testing_splitted):
+    targets_test_splitted = data_for_testing_splitted['people_concentration']
+    return targets_test_splitted
 
 @pytest.fixture(scope='function')
 def prediction_data_for_testing():
