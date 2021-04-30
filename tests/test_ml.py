@@ -31,10 +31,6 @@ def test_create_gradientboosting(gradient_boosting_factory):
     assert isinstance(gradient_boosting, GradientBoosting)
     assert pd.notnull(gradient_boosting)
 
-def test_fit_decisiontree(decision_tree_factory):
-    decision_tree = decision_tree_factory.create()
-    decision_tree.fit()
-
 def test__split_date(datetime_test):
     scaler = Scaler()
     date, time = scaler._split_date(datetime_test)
