@@ -5,8 +5,24 @@ from pathlib import Path
 
 from datetime import datetime
 
-from flaskr.ml import Algorithm, DecisionTree, GradientBoosting, RandomForest
+from flaskr.ml import Algorithm, DecisionTree, GradientBoosting, RandomForest, DecisionTreeFactory, RandomForestFactory, GradientBoostingFactory
 from flaskr.repository import FileReader
+from flaskr.repository.Db import Db
+
+@pytest.fixture(scope='function')
+def decision_tree_factory():
+    decision_tree_factory = DecisionTreeFactory()
+    return decision_tree_factory
+
+@pytest.fixture(scope='function')
+def random_forest_factory():
+    random_forest_factory = RandomForestFactory()
+    return random_forest_factory
+
+@pytest.fixture(scope='function')
+def gradient_boosting_factory():
+    gradient_boosting_factory = GradientBoostingFactory()
+    return gradient_boosting_factory
 
 @pytest.fixture(scope='function')
 def datetime_test():
@@ -40,5 +56,13 @@ def prediction_data_for_testing():
     file_reader = FileReader('prediction_test_dataset.csv')
     prediction_data_for_testing = file_reader.read_file()
     return prediction_data_for_testing
+
+@pytest.fixture(scope='function')
+def db_test():
+    file_reader = FileReader('test_dataset.csv')
+    db_test = Db(file_reader)
+    return db_test
+    
+
 
 

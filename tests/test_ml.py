@@ -7,8 +7,33 @@ from datetime import datetime
 
 from flaskr.ml.Scaler import Scaler
 from flaskr.ml.Trainer import Trainer
-from flaskr.ml import Algorithm, DecisionTreeFactory, GradientBoostingFactory, RandomForestFactory, DecisionTree, GradientBoosting, RandomForest
+from flaskr.ml.Algorithm import Algorithm
+from flaskr.ml.DecisionTreeFactory import DecisionTreeFactory
+from flaskr.ml.RandomForestFactory import RandomForestFactory
+from flaskr.ml.GradientBoostingFactory import GradientBoostingFactory
+from flaskr.ml.DecisionTree import DecisionTree
+from flaskr.ml.RandomForest import RandomForest
+from flaskr.ml.GradientBoosting import GradientBoosting
 from flaskr.repository.FileReader import FileReader
+
+def test_create_decisiontree(decision_tree_factory):
+    decision_tree = decision_tree_factory.create() 
+    assert isinstance(decision_tree, DecisionTree)
+    assert pd.notnull(decision_tree)
+
+def test_create_randomforest(random_forest_factory):
+    random_forest = random_forest_factory.create() 
+    assert isinstance(random_forest, RandomForest)
+    assert pd.notnull(random_forest)
+
+def test_create_gradientboosting(gradient_boosting_factory):
+    gradient_boosting = gradient_boosting_factory.create() 
+    assert isinstance(gradient_boosting, GradientBoosting)
+    assert pd.notnull(gradient_boosting)
+
+def test_fit_decisiontree(decision_tree_factory):
+    decision_tree = decision_tree_factory.create()
+    decision_tree.fit()
 
 def test__split_date(datetime_test):
     scaler = Scaler()
