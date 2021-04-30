@@ -71,7 +71,7 @@ def prediction_for_all_point_in_interval(service: PredictionService):
     for item in tracked_point_list:
         result.append({"point_id":int(item.point_id),  "predictions": []})
         for predict in item.predictions:
-            result[i]["predictions"].append({str(predict.time): predict.flow})
+            result[i]["predictions"].append({"time": str(predict.time) ,"flow": predict.flow})
         i = i+1
     return jsonify(result)
 
