@@ -47,14 +47,14 @@ def timearray_test():
 
 @pytest.fixture(scope='function')
 def data_for_testing():
-    file_reader = FileReader('test_data.csv')
-    data_for_testing = file_reader.read_file()
+    file_path = Path('file', 'test_data.csv')
+    data_for_testing=pd.read_csv(file_path)
     return data_for_testing
 
 @pytest.fixture(scope='function')
 def data_for_testing_splitted():
-    file_reader = FileReader('test_data_splitted.csv')
-    data_for_testing_splitted = file_reader.read_file()
+    file_path = Path('file', 'test_data_splitted.csv')
+    data_for_testing_splitted=pd.read_csv(file_path)
     return data_for_testing_splitted
 
 @pytest.fixture(scope='function')
@@ -69,8 +69,8 @@ def targets_test_splitted(data_for_testing_splitted):
 
 @pytest.fixture(scope='function')
 def prediction_data_for_testing():
-    file_reader = FileReader('prediction_test_dataset.csv')
-    prediction_data_for_testing = file_reader.read_file()
+    file_path = Path('file', 'prediction_test_dataset.csv')
+    prediction_data_for_testing=pd.read_csv(file_path)
     return prediction_data_for_testing
 
 @pytest.fixture(scope='function')
