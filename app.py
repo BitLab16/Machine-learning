@@ -83,7 +83,7 @@ def prediction_for_single_point_in_interval(code: int, service: PredictionServic
     tracked_point = service.predict_for_point(code, time_from, time_to)
     result = { "point_id": tracked_point.point_id, "predictions": []}
     for item in tracked_point.predictions:
-        result["predictions"].append({str(item.time): item.flow})
+        result["predictions"].append({"time": str(item.time) ,"flow": item.flow})
     return jsonify(result)
 
 
