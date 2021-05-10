@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.exceptions import NotFittedError
 import pandas as pd
 import numpy as np
+from flask import Flask, request, jsonify
 
 from app import to_date, compare_algorithm, train_ml
 from flaskr.ml import Algorithm, DecisionTree, GradientBoosting, RandomForest
@@ -50,10 +51,12 @@ def test_train_ml(features_test_splitted, targets_test_splitted):
     assert isinstance(model, Algorithm)
     assert pd.notnull(model)
 
-'''
-def test_prediction_for_single_point_in_interval():
-    app = Flask(__name__)
-    c = app.test_client()
-    response = c.get('/prediction/<int:code>/')
+def test_prediction_for_single_point_in_interval(app, client):
+    route = '/prediction/1/?from=2021-03-07 08:00&to=2021-03-07 12:00'
+    rv = client.get(route)
+    assert rv.status_code == 200
 
-'''
+def test_prediction_for_all_point_in_interval(app, client):
+    route = '/prediction/?from=2021-03-07 08:00&to=2021-03-07 12:00'
+    rv = client.get(route)
+    assert rv.status_code == 200

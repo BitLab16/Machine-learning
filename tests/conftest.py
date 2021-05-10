@@ -5,9 +5,12 @@ from pathlib import Path
 
 from datetime import datetime
 
+from app import app as flask_app
+from flask import Flask, request
 from flaskr.ml import Algorithm, DecisionTree, GradientBoosting, RandomForest, DecisionTreeFactory, RandomForestFactory, GradientBoostingFactory
 from flaskr.repository import FileReader
 from flaskr.repository.Db import Db
+from flask import Flask, request, jsonify
 
 @pytest.fixture(scope='function')
 def decision_tree_factory():
@@ -78,6 +81,14 @@ def db_test():
     file_reader = FileReader('test_dataset.csv')
     db_test = Db(file_reader)
     return db_test
+
+@pytest.fixture
+def app():
+    yield flask_app
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
     
 
 
