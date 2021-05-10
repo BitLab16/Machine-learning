@@ -48,7 +48,7 @@ def train_ml():
     trainer = Trainer(0.2, feature, targets)
     trainer.train(models)
     score, model = compare_algorithm(models, trainer.x_test, trainer.y_test)
-    print("Best score: " + str(score))
+    print("Best score: " + str(type(model)) + str(score))
     return model
 
 

@@ -59,7 +59,7 @@ def data_for_testing_splitted():
 
 @pytest.fixture(scope='function')
 def features_test_splitted(data_for_testing_splitted):
-    features_test_splitted = data_for_testing_splitted.drop('people_concentration', axis=1)
+    features_test_splitted = data_for_testing_splitted.drop(['people_concentration'], axis=1)
     return features_test_splitted
 
 @pytest.fixture(scope='function')

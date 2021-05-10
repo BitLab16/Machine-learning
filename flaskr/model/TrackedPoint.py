@@ -9,13 +9,4 @@ class TrackedPoint:
     def add_predictions(self, predictions_list) -> None: 
         self.predictions.append(predictions_list)
 
-    def to_json(self) -> dict:
-        predictions = []
-        for item in self.predictions:
-            predictions.append(item.to_json)
-        return {
-            "point": self.point_id,
-            "prediction": predictions
-        }
-
     
