@@ -5,9 +5,12 @@ from pathlib import Path
 
 from datetime import datetime
 
+from app import app as flask_app
+from flask import Flask, request
 from flaskr.ml import Algorithm, DecisionTree, GradientBoosting, RandomForest, DecisionTreeFactory, RandomForestFactory, GradientBoostingFactory
 from flaskr.repository import FileReader
 from flaskr.repository.Db import Db
+from flask import Flask, request, jsonify
 
 @pytest.fixture(scope='function')
 def decision_tree_factory():
@@ -47,19 +50,19 @@ def timearray_test():
 
 @pytest.fixture(scope='function')
 def data_for_testing():
-    file_reader = FileReader('test_data.csv')
-    data_for_testing = file_reader.read_file()
+    file_path = Path('file', 'test_data.csv')
+    data_for_testing=pd.read_csv(file_path)
     return data_for_testing
 
 @pytest.fixture(scope='function')
 def data_for_testing_splitted():
-    file_reader = FileReader('test_data_splitted.csv')
-    data_for_testing_splitted = file_reader.read_file()
+    file_path = Path('file', 'test_data_splitted.csv')
+    data_for_testing_splitted=pd.read_csv(file_path)
     return data_for_testing_splitted
 
 @pytest.fixture(scope='function')
 def features_test_splitted(data_for_testing_splitted):
-    features_test_splitted = data_for_testing_splitted.drop('people_concentration', axis=1)
+    features_test_splitted = data_for_testing_splitted.drop(['people_concentration'], axis=1)
     return features_test_splitted
 
 @pytest.fixture(scope='function')
@@ -69,8 +72,8 @@ def targets_test_splitted(data_for_testing_splitted):
 
 @pytest.fixture(scope='function')
 def prediction_data_for_testing():
-    file_reader = FileReader('prediction_test_dataset.csv')
-    prediction_data_for_testing = file_reader.read_file()
+    file_path = Path('file', 'prediction_test_dataset.csv')
+    prediction_data_for_testing=pd.read_csv(file_path)
     return prediction_data_for_testing
 
 @pytest.fixture(scope='function')
@@ -78,6 +81,14 @@ def db_test():
     file_reader = FileReader('test_dataset.csv')
     db_test = Db(file_reader)
     return db_test
+
+@pytest.fixture
+def app():
+    yield flask_app
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
     
 
 
