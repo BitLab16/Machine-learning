@@ -11,3 +11,7 @@ SQLAlchemy==1.3.23
 py-postgresql==1.2.2
 psycopg2-binary==2.8.6
 GeoAlchemy2==0.8.4
+schedule==1.0.0
+flask==1.1.2
+flask-injector==0.12.3
+pytest==6.2.3

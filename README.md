@@ -1,5 +1,8 @@
 # Machine-learning
 
+[![Python CI](https://github.com/BitLab16/Machine-learning/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/BitLab16/Machine-learning/actions/workflows/ci.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BitLab16_Machine-learning&metric=alert_status)](https://sonarcloud.io/dashboard?id=BitLab16_Machine-learning)
+
 Per l'esecuzione dell'applicativo:
 1) Installare Python (versione <=3.8)
 2) Installare Pip:
