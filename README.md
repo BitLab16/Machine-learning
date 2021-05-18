@@ -14,6 +14,6 @@ Per l'esecuzione dell'applicativo:
     b) python3 -m venv env (Linux/Mac OS)
 5) Posizionarsi all'interno di nome_cartella ed eseguire: 
     a) env\Scripts\activate     (Windows)
-    b) source env\bin\activate  (Linux/Mac OS)
+    b) source env/bin/activate  (Linux/Mac OS)
 6) Successivamente, eseguire: pip install -r requirements.txt
-7) Eseguire: py tran.py
+7) Eseguire: flask run
